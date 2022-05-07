@@ -2,7 +2,8 @@ import { useContext, useRef } from "react";
 import styled from "styled-components";
 import { loginCall } from "../apiCalls";
 import { AuthContext } from "../components/context/AuthContext";
-import LinearProgress from '@mui/material/LinearProgress';
+import { CircularProgress } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const LoginContainer = styled.div`
   width: 100vw;
@@ -98,7 +99,7 @@ const Login = () => {
       dispatch
     );
   };
-  console.log(user);
+  // console.log(user);
   return (
     <LoginContainer>
       <LoginWrapper>
@@ -126,13 +127,21 @@ const Login = () => {
             ></LoginInput>
             <LoginButton type="submit" disabled={isFetching}>
               {isFetching ? (
-                <LinearProgress />
+                <CircularProgress color="white" size="20px" />
               ) : (
                 "Log In"
               )}
             </LoginButton>
             <LoginForgot>Forgot Password?</LoginForgot>
-            <LoginRegister>Create Account</LoginRegister>
+            <LoginRegister>
+              <Link to="/register">
+                {isFetching ? (
+                  <CircularProgress color="white" size="20px" />
+                ) : (
+                  "Create a New Account"
+                )}
+              </Link>
+            </LoginRegister>
           </LoginBox>
         </LoginRight>
       </LoginWrapper>

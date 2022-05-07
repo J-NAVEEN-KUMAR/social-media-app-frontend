@@ -1,7 +1,9 @@
 import axios from "axios";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 const LoginContainer = styled.div`
   width: 100vw;
@@ -86,10 +88,12 @@ const Register = () => {
   const password = useRef();
   const passwordAgain = useRef();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    console.log(password.current.value, passwordAgain.current.value);
+    // console.log(password.current.value, passwordAgain.current.value);
     e.preventDefault();
+    setLoading(true);
     if (passwordAgain.current.value !== password.current.value) {
       passwordAgain.current.setCustomValidity("Passwords don't match");
     } else {
@@ -100,8 +104,9 @@ const Register = () => {
       };
       try {
         await axios.post("auth/register", user);
+        setLoading(false);
         history.push("/login");
-        console.log(history);
+        // console.log(history);
       } catch (error) {
         console.log(error);
       }
@@ -145,8 +150,16 @@ const Register = () => {
               type="password"
               required
             ></LoginInput>
-            <LoginButton type="submit">Sign Up</LoginButton>
-            <LoginRegister>Already have an account? Login-In</LoginRegister>
+            <LoginButton type="submit">
+              {loading ? (
+                <CircularProgress color="white" size="20px" />
+              ) : (
+                "Sign Up"
+              )}
+            </LoginButton>
+            <LoginRegister>
+              <Link to="/login">Already have an account? Login-In</Link>
+            </LoginRegister>
           </LoginBox>
         </LoginRight>
       </LoginWrapper>

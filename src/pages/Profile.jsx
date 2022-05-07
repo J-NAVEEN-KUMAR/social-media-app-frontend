@@ -59,7 +59,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`);
-      console.log(res.data);
+      // console.log("PROFILE==>",res.data);
       setUser(res.data);
     };
     fetchUser();
@@ -79,6 +79,7 @@ const Profile = () => {
                     ? PF + user.coverPicture
                     : PF + "persons/defaultcover.jpg"
                 }
+                alt=""
               ></ProfileCoverImg>
               <ProfileUserImg
                 src={
@@ -86,6 +87,7 @@ const Profile = () => {
                     ? PF + user.profilePicture
                     : PF + "persons/defaultavatar.png"
                 }
+                alt=""
               ></ProfileUserImg>
             </ProfileCover>
             <ProfileInfo>

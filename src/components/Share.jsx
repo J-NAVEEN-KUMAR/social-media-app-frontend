@@ -1,6 +1,7 @@
 import {
   AddLocationAltOutlined,
   AddPhotoAlternateOutlined,
+  Cancel,
   LocalOfferOutlined,
 } from "@mui/icons-material";
 import styled from "styled-components";
@@ -10,7 +11,6 @@ import axios from "axios";
 
 const ShareContainer = styled.div`
   width: 100%;
-  height: auto;
   border-radius: 10px;
   -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
@@ -77,6 +77,22 @@ const Button = styled.button`
   cursor: pointer;
   color: white;
 `;
+const ShareImgContainer = styled.div`
+  padding: 0 20px 10px 20px;
+  position: relative;
+`;
+const ShareImg = styled.img`
+  width: 100%;
+  object-fit: cover;
+`;
+const ShareCancelImg = styled.button`
+  position: absolute;
+  top: 0;
+  right: 20px;
+  cursor: pointer;
+  opacity: 0.75;
+  color: red;
+`;
 
 const Share = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -104,6 +120,7 @@ const Share = () => {
     }
     try {
       await axios.post("/posts", newPost);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -125,6 +142,14 @@ const Share = () => {
           ></ShareInput>
         </ShareTop>
         <ShareHr></ShareHr>
+        {file && (
+          <ShareImgContainer>
+            <ShareImg src={URL.createObjectURL(file)} alt="" />
+            <ShareCancelImg onClick={() => setFile(null)}>
+              <Cancel />
+            </ShareCancelImg>
+          </ShareImgContainer>
+        )}
         <ShareBottom onSubmit={handleSubmit}>
           <ShareOptions>
             <ShareOption>

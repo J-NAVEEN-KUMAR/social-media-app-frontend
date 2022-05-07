@@ -29,7 +29,8 @@ const Timeline = ({ username }) => {
 
   return (
     <TimelineContainer>
-      <Share />
+      {(!username || username === user.username) && <Share />}
+
       {posts.map((post) => (
         <Post key={post._id} post={post} />
       ))}

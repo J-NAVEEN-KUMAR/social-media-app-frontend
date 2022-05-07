@@ -1,6 +1,11 @@
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Users } from "../DummyData";
 import Online from "./Online";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext";
+import { Add, Remove } from "@mui/icons-material";
 
 const RightbarContainer = styled.div`
   flex: 2.5;
@@ -48,7 +53,7 @@ const RightbarInfoKeyValue = styled.span`
 const RightbarFollowings = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 const RightbarFollowing = styled.div`
   display: flex;
@@ -63,9 +68,63 @@ const RightbarFollowingImg = styled.img`
   border-radius: 5px;
 `;
 const RightbarFollowingName = styled.span``;
+const RightbarFollowButton = styled.button`
+  margin-top: 30px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #1872f2;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+`;
 
 const Rightbar = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  // console.log(user);
+  const [friends, setFriends] = useState([]);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
+  const [followed, setFollowed] = useState(
+    currentUser.following.includes(user?.id)
+  );
+  
+
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const friendList = await axios.get("/users/friends/" + user?._id);
+        setFriends(friendList.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFriends();
+  }, [user]);
+  // console.log("useEffect", friends)
+
+  const handleClick = async () => {
+    try {
+      if (followed) {
+        await axios.put("/users/" + user._id + "/unfollow", {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "UNFOLLOW", payload: user._id });
+      } else {
+        await axios.put("/users/" + user._id + "/follow", {
+          userId: currentUser._id,
+        });
+        dispatch({ type: "FOLLOW", payload: user._id });
+      }
+      setFollowed(!followed);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   const HomeRightbar = () => {
     return (
       <>
@@ -89,6 +148,12 @@ const Rightbar = ({ user }) => {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     return (
       <>
+        {user.username !== currentUser.username && (
+          <RightbarFollowButton onClick={handleClick}>
+            {followed ? "Unfolow" : "Follow"}
+            {followed ? <Remove /> : <Add />}
+          </RightbarFollowButton>
+        )}
         <RightbarTitle>About You</RightbarTitle>
         <RightbarInfo>
           <RightbarInfoItem>
@@ -118,15 +183,25 @@ const Rightbar = ({ user }) => {
             </RightbarInfoKeyValue>
           </RightbarInfoItem>
         </RightbarInfo>
-        <RightbarTitle>Friends</RightbarTitle>
+        <RightbarTitle>Your Friends</RightbarTitle>
         <RightbarFollowings>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/chandler.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Chandler</RightbarFollowingName>
-          </RightbarFollowing>
-          
+          {friends.map((friend) => (
+            <Link
+              to={"/profile/" + friend.username}
+              style={{ "text-decoration": "none" }}
+            >
+              <RightbarFollowing>
+                <RightbarFollowingImg
+                  src={
+                    friend.profilePicture
+                      ? PF + friend.profilePicture
+                      : PF + "persons/defaultavatar.png"
+                  }
+                ></RightbarFollowingImg>
+                <RightbarFollowingName>{friend.username}</RightbarFollowingName>
+              </RightbarFollowing>
+            </Link>
+          ))}
         </RightbarFollowings>
       </>
     );
