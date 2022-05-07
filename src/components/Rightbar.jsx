@@ -126,36 +126,7 @@ const Rightbar = ({ user }) => {
             ></RightbarFollowingImg>
             <RightbarFollowingName>Chandler</RightbarFollowingName>
           </RightbarFollowing>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/joey.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Joey</RightbarFollowingName>
-          </RightbarFollowing>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/monica.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Monica</RightbarFollowingName>
-          </RightbarFollowing>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/pheebs.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Phoebe</RightbarFollowingName>
-          </RightbarFollowing>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/rachel.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Rachel</RightbarFollowingName>
-          </RightbarFollowing>
-          <RightbarFollowing>
-            <RightbarFollowingImg
-              src={`${PF}persons/ross.jpg`}
-            ></RightbarFollowingImg>
-            <RightbarFollowingName>Ross</RightbarFollowingName>
-          </RightbarFollowing>
+          
         </RightbarFollowings>
       </>
     );
