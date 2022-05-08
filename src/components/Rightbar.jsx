@@ -91,7 +91,7 @@ const Rightbar = ({ user }) => {
   const [followed, setFollowed] = useState(
     currentUser.following.includes(user?.id)
   );
-  
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const getFriends = async () => {
@@ -106,8 +106,25 @@ const Rightbar = ({ user }) => {
   }, [user]);
   // console.log("useEffect", friends)
 
+  //getting all the users
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const allUsers = await axios.get("users/all");
+        setUsers(allUsers.data);
+        // console.log("USERS ===>", users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllUsers();
+  }, []);
+
   const handleClick = async () => {
     try {
+      // console.log("USER ===>", user._id);
+      // console.log("CURRENT_USER ===>", currentUser._id);
+      // console.log("Followed in ===>",followed)
       if (followed) {
         await axios.put("/users/" + user._id + "/unfollow", {
           userId: currentUser._id,
@@ -124,7 +141,7 @@ const Rightbar = ({ user }) => {
       console.log(error);
     }
   };
-  
+
   const HomeRightbar = () => {
     return (
       <>
@@ -136,7 +153,7 @@ const Rightbar = ({ user }) => {
         </BirthdayContainer>
         <RightbarTitle>See, who are Online...!</RightbarTitle>
         <RightbarFriendList>
-          {Users.map((user) => (
+          {users.map((user) => (
             <Online key={user.id} user={user} />
           ))}
         </RightbarFriendList>

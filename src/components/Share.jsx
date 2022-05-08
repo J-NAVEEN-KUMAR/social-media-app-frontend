@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { AuthContext } from "../components/context/AuthContext";
 import { useContext, useRef, useState } from "react";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 const ShareContainer = styled.div`
   width: 100%;
@@ -99,16 +100,18 @@ const Share = () => {
   const { user } = useContext(AuthContext);
   const desc = useRef();
   const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
     };
     if (file) {
       const data = new FormData();
-      const fileName = Date.now() + file.name;
+      const fileName =  file.name;
       data.append("file", file);
       data.append("name", fileName);
       newPost.img = fileName;
@@ -121,6 +124,7 @@ const Share = () => {
     try {
       await axios.post("/posts", newPost);
       window.location.reload();
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -178,7 +182,9 @@ const Share = () => {
               </ShareIcon>
             </ShareOption>
           </ShareOptions>
-          <Button typeof="submit">Post</Button>
+          <Button typeof="submit">
+            {loading ? <CircularProgress color="white" size="10px"/> : "Post"}
+          </Button>
         </ShareBottom>
       </ShareWrapper>
     </ShareContainer>

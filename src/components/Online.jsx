@@ -28,13 +28,22 @@ const RightbarOnline = styled.span`
 `;
 const RightbarUsername = styled.span``;
 
-const Online = ({user}) => {
+const Online = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
     <RightbarFriend>
+      <Link>
+    
       <RightbarProfileImgContainer>
-        <RightbarProfileImg src={PF+user.profilePicture}></RightbarProfileImg>
+        <RightbarProfileImg
+          src={
+            user.profilePicture
+            ? PF + user.profilePicture
+            : PF + "persons/defaultavatar.png"
+          }
+        ></RightbarProfileImg>
         <RightbarOnline></RightbarOnline>
+            </Link>
       </RightbarProfileImgContainer>
       <RightbarUsername>{user.username}</RightbarUsername>
     </RightbarFriend>
