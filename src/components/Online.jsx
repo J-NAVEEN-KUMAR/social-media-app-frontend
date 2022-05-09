@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const RightbarFriend = styled.li`
   display: flex;
@@ -15,6 +16,7 @@ const RightbarProfileImg = styled.img`
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 `;
 const RightbarOnline = styled.span`
   width: 12px;
@@ -32,18 +34,17 @@ const Online = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
     <RightbarFriend>
-      <Link>
-    
       <RightbarProfileImgContainer>
-        <RightbarProfileImg
-          src={
-            user.profilePicture
-            ? PF + user.profilePicture
-            : PF + "persons/defaultavatar.png"
-          }
-        ></RightbarProfileImg>
+        <Link to={`/profile/${user.username}`}>
+          <RightbarProfileImg
+            src={
+              user.profilePicture
+                ? PF + user.profilePicture
+                : PF + "persons/defaultavatar.png"
+            }
+          ></RightbarProfileImg>
+        </Link>
         <RightbarOnline></RightbarOnline>
-            </Link>
       </RightbarProfileImgContainer>
       <RightbarUsername>{user.username}</RightbarUsername>
     </RightbarFriend>

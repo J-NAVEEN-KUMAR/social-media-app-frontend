@@ -128,8 +128,17 @@ const Topbar = () => {
       </TopbarCenter>
       <TopbarRight>
         <TopbarLinks>
-          <TopbarLink>Home</TopbarLink>
-          <TopbarLink>Timeline</TopbarLink>
+          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+            <TopbarLink>Home</TopbarLink>
+          </Link>
+          <TopbarLink>
+            <Link
+              to={`/profile/${user.username}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              Timeline
+            </Link>
+          </TopbarLink>
         </TopbarLinks>
         <TopbarIcons>
           <TopbarIconItem>
@@ -145,6 +154,7 @@ const Topbar = () => {
             <TopbarIconBadge>20</TopbarIconBadge>
           </TopbarIconItem>
         </TopbarIcons>
+        <TopbarLink style={{ marginRight: "0" }}>Logout</TopbarLink>
         <Link to={`/profile/${user.username}`}>
           <ProfilePic
             src={
