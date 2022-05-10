@@ -112,6 +112,7 @@ const ProfilePic = styled.img`
 const Topbar = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
+  const { userInfo } = user;
 
   return (
     <TopbarContainer>
@@ -133,7 +134,7 @@ const Topbar = () => {
           </Link>
           <TopbarLink>
             <Link
-              to={`/profile/${user.username}`}
+              to={`/profile/${userInfo.username}`}
               style={{ textDecoration: "none", color: "white" }}
             >
               Timeline
@@ -155,11 +156,11 @@ const Topbar = () => {
           </TopbarIconItem>
         </TopbarIcons>
         <TopbarLink style={{ marginRight: "0" }}>Logout</TopbarLink>
-        <Link to={`/profile/${user.username}`}>
+        <Link to={`/profile/${userInfo.username}`}>
           <ProfilePic
             src={
-              user.profilePicture
-                ? PF + user.profilePicture
+              userInfo.profilePicture
+                ? PF + userInfo.profilePicture
                 : PF + "persons/defaultavatar.png"
             }
           ></ProfilePic>

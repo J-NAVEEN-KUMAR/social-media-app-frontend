@@ -88,8 +88,9 @@ const Rightbar = ({ user }) => {
   // console.log(user);
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
+  const { userInfo } = currentUser;
   const [followed, setFollowed] = useState(
-    currentUser.following.includes(user?.id)
+    userInfo.following.includes(user?.id)
   );
   const [users, setUsers] = useState([]);
 
@@ -127,12 +128,12 @@ const Rightbar = ({ user }) => {
       // console.log("Followed in ===>",followed)
       if (followed) {
         await axios.put("/users/" + user._id + "/unfollow", {
-          userId: currentUser._id,
+          userId: userInfo._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
         await axios.put("/users/" + user._id + "/follow", {
-          userId: currentUser._id,
+          userId: userInfo._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });
       }
@@ -165,7 +166,7 @@ const Rightbar = ({ user }) => {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     return (
       <>
-        {user.username !== currentUser.username && (
+        {user.username !== userInfo.username && (
           <RightbarFollowButton onClick={handleClick}>
             {followed ? "Unfolow" : "Follow"}
             {followed ? <Remove /> : <Add />}

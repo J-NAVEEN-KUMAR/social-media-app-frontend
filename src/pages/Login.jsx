@@ -4,7 +4,6 @@ import { loginCall } from "../apiCalls";
 import { AuthContext } from "../components/context/AuthContext";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 
 const LoginContainer = styled.div`
   width: 100vw;
@@ -91,7 +90,7 @@ const LoginRegister = styled.button`
 const Login = () => {
   const email = useRef();
   const password = useRef();
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const {  isFetching, dispatch } = useContext(AuthContext);
   // console.log(isFetching);
   // console.log(user);
 

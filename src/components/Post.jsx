@@ -82,10 +82,11 @@ const Post = ({ post }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
   const { user: currentUser } = useContext(AuthContext);
+  const { userInfo } = currentUser;
 
   useEffect(() => {
-    setIsLiked(post.likes.includes(currentUser._id));
-  }, [currentUser, post.likes]);
+    setIsLiked(post.likes.includes(userInfo._id));
+  }, [userInfo, post.likes]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -98,7 +99,7 @@ const Post = ({ post }) => {
 
   const handleLike = () => {
     try {
-      axios.put("/posts/" + post._id + "/likes", { userId: currentUser._id });
+      axios.put("/posts/" + post._id + "/likes", { userId: userInfo._id });
     } catch (error) {
       console.log(error);
     }

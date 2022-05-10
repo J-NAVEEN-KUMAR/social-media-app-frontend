@@ -106,7 +106,7 @@ const Register = () => {
         password: password.current.value,
       };
       try {
-        const res = await axios.post("auth/register", user);
+        await axios.post("auth/register", user);
         toast.success(
           "Registration successful ...! Please Login.",
           {
