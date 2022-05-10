@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../components/context/AuthContext";
+import { toast } from "react-toastify";
 
 //TopbarContainer
 const TopbarContainer = styled.div`
@@ -114,6 +115,12 @@ const Topbar = () => {
   const { user } = useContext(AuthContext);
   const { userInfo } = user;
 
+  const handleLogout = () => {
+    window.localStorage.removeItem("user");
+    toast.success("Logged out successfully!");
+    window.location.reload();
+  };
+
   return (
     <TopbarContainer>
       <TopbarLeft>
@@ -155,7 +162,9 @@ const Topbar = () => {
             <TopbarIconBadge>20</TopbarIconBadge>
           </TopbarIconItem>
         </TopbarIcons>
-        <TopbarLink style={{ marginRight: "0" }}>Logout</TopbarLink>
+        <TopbarLink style={{ marginRight: "0" }} onClick={handleLogout}>
+          Logout
+        </TopbarLink>
         <Link to={`/profile/${userInfo.username}`}>
           <ProfilePic
             src={

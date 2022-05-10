@@ -6,8 +6,6 @@ export const loginCall = async (userCredentials, dispatch) => {
   try {
     const res = await axios.post("auth/login", userCredentials);
     window.localStorage.setItem("user", JSON.stringify(res.data));
-    JSON.parse(window.localStorage.getItem("user"));
-
     toast.success("Login successful ...!", {
       icon: "🚀",
     });
