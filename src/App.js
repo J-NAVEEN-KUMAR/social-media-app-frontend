@@ -5,11 +5,14 @@ import Profile from "./pages/Profile";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./components/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const {user} = useContext(AuthContext)
   return (
     <Router>
+      <ToastContainer postition="bottom-right"/>
       <Switch>
         <Route exact path="/">
           {user ? <Home /> : <Register />}

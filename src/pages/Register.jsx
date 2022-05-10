@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import { toast } from "react-toastify";
 
 const LoginContainer = styled.div`
   width: 100vw;
@@ -95,7 +96,9 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
     if (passwordAgain.current.value !== password.current.value) {
-      passwordAgain.current.setCustomValidity("Passwords don't match");
+      // passwordAgain.current.setCustomValidity("Passwords don't match");
+      toast.error("Passwords don't match");
+      setLoading(false);
     } else {
       const user = {
         username: username.current.value,
@@ -103,11 +106,18 @@ const Register = () => {
         password: password.current.value,
       };
       try {
-        await axios.post("auth/register", user);
+        const res = await axios.post("auth/register", user);
+        toast.success(
+          "Registration successful ...! Please Login.",
+          {
+            icon: "🚀",
+          }
+        );
         setLoading(false);
         history.push("/login");
         // console.log(history);
       } catch (error) {
+        if (error.response.status === 400) toast.error(error.response.data);
         console.log(error);
       }
     }
@@ -151,14 +161,15 @@ const Register = () => {
               required
             ></LoginInput>
             <LoginButton type="submit">
-              {loading ? (
-                <CircularProgress color="white" size="20px" />
-              ) : (
-                "Sign Up"
-              )}
+              {loading ? <CircularProgress color="success" /> : "Sign Up"}
             </LoginButton>
             <LoginRegister>
-              <Link to="/login">Already have an account? Login-In</Link>
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                Already have an account? Login-In
+              </Link>
             </LoginRegister>
           </LoginBox>
         </LoginRight>

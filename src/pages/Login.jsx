@@ -4,6 +4,7 @@ import { loginCall } from "../apiCalls";
 import { AuthContext } from "../components/context/AuthContext";
 import { CircularProgress } from "@mui/material";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginContainer = styled.div`
   width: 100vw;
@@ -69,11 +70,11 @@ const LoginButton = styled.button`
   font-weight: 500;
   cursor: pointer;
 `;
-const LoginForgot = styled.span`
-  text-align: center;
-  color: #34b7f1;
-  cursor: pointer;
-`;
+// const LoginForgot = styled.span`
+//   text-align: center;
+//   color: #34b7f1;
+//   cursor: pointer;
+// `;
 const LoginRegister = styled.button`
   width: 60%;
   align-self: center;
@@ -91,6 +92,8 @@ const Login = () => {
   const email = useRef();
   const password = useRef();
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  // console.log(isFetching);
+  // console.log(user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -126,20 +129,15 @@ const Login = () => {
               required
             ></LoginInput>
             <LoginButton type="submit" disabled={isFetching}>
-              {isFetching ? (
-                <CircularProgress color="white" size="20px" />
-              ) : (
-                "Log In"
-              )}
+              {isFetching ? <CircularProgress color="success" /> : "Log In"}
             </LoginButton>
-            <LoginForgot>Forgot Password?</LoginForgot>
-            <LoginRegister>
-              <Link to="/register">
-                {isFetching ? (
-                  <CircularProgress color="white" size="20px" />
-                ) : (
-                  "Create a New Account"
-                )}
+            {/* <LoginForgot>Forgot Password?</LoginForgot> */}
+            <LoginRegister disabled={isFetching}>
+              <Link
+                to="/register"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                Create a New Account
               </Link>
             </LoginRegister>
           </LoginBox>
