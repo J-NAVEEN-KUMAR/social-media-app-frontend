@@ -1,4 +1,17 @@
 const AuthReducer = (state, action) => {
+  console.log("AUTHREDUCER ===>", {
+    ...state.user.userInfo,
+    following: [...state.user.userInfo.following, action.payload],
+  });
+  console.log("STATE ===>", state);
+  console.log("UNFOLLOW ===>", {
+    ...state.user.userInfo,
+    following: state.user.userInfo.following.filter(
+      (following) => following !== action.payload
+    ),
+  });
+  console.log("ACTION.PAYLOAD ===>", action);
+
   switch (action.type) {
     case "LOGIN_START":
       return {
@@ -25,18 +38,18 @@ const AuthReducer = (state, action) => {
       };
     case "FOLLOW":
       return {
-        ...state,
+        ...state.user,
         user: {
           ...state.user,
-          followings: [...state.user.following, action.payload],
+          following: [...state.user.userInfo.following, action.payload],
         },
       };
     case "UNFOLLOW":
       return {
-        ...state,
+        ...state.user,
         user: {
           ...state.user,
-          following: state.user.following.filter(
+          following: state.user.userInfo.following.filter(
             (following) => following !== action.payload
           ),
         },

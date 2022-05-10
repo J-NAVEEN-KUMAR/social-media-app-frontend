@@ -114,6 +114,7 @@ const Topbar = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
   const { userInfo } = user;
+  console.log("TOPBAR ===>", userInfo)
 
   const handleLogout = () => {
     window.localStorage.removeItem("user");

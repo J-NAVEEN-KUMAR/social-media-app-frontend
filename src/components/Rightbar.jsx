@@ -89,9 +89,12 @@ const Rightbar = ({ user }) => {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const { userInfo } = currentUser;
+  console.log("USERINFO", userInfo);
   const [followed, setFollowed] = useState(
     userInfo.following.includes(user?.id)
   );
+  console.log(userInfo.following.includes(user?.id));
+  console.log("FOLLOWED ===>", followed);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -124,7 +127,7 @@ const Rightbar = ({ user }) => {
   const handleClick = async () => {
     try {
       // console.log("USER ===>", user._id);
-      // console.log("CURRENT_USER ===>", currentUser._id);
+      // console.log("CURRENT_USER ===>", userInfo._id);
       // console.log("Followed in ===>",followed)
       if (followed) {
         await axios.put("/users/" + user._id + "/unfollow", {
