@@ -118,6 +118,7 @@ const Register = () => {
         // console.log(history);
       } catch (error) {
         if (error.response.status === 400) toast.error(error.response.data);
+        setLoading(false);
         console.log(error);
       }
     }
