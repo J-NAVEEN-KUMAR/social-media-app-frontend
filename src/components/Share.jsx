@@ -98,7 +98,7 @@ const ShareCancelImg = styled.button`
 const Share = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
-  const {  userInfo } = user;
+  // const {  userInfo } = user;
   const desc = useRef();
   const [file, setFile] = useState();
   const [loading, setLoading] = useState(false);
@@ -107,7 +107,7 @@ const Share = () => {
     e.preventDefault();
     setLoading(true);
     const newPost = {
-      userId: userInfo._id,
+      userId: user._id,
       desc: desc.current.value,
     };
     if (file) {
@@ -136,13 +136,13 @@ const Share = () => {
         <ShareTop>
           <ShareProfileImg
             src={
-              userInfo.profilePicture
-                ? PF + userInfo.profilePicture
+              user.profilePicture
+                ? PF + user.profilePicture
                 : PF + "/persons/defaultavatar.png"
             }
           ></ShareProfileImg>
           <ShareInput
-            placeholder={`Share your thoughts ${userInfo.username} ...!`}
+            placeholder={`Share your thoughts ${user.username} ...!`}
             ref={desc}
           ></ShareInput>
         </ShareTop>

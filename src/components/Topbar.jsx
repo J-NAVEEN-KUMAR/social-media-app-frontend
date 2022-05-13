@@ -113,12 +113,11 @@ const ProfilePic = styled.img`
 const Topbar = () => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
-  const { userInfo } = user;
-  console.log("TOPBAR ===>", userInfo)
 
   const handleLogout = () => {
     window.localStorage.removeItem("user");
-    toast.success("Logged out successfully!");
+    window.localStorage.removeItem("token");
+    toast.success("Logging out!");
     window.location.reload();
   };
 
@@ -142,7 +141,7 @@ const Topbar = () => {
           </Link>
           <TopbarLink>
             <Link
-              to={`/profile/${userInfo.username}`}
+              to={`/profile/${user.username}`}
               style={{ textDecoration: "none", color: "white" }}
             >
               Timeline
@@ -166,11 +165,11 @@ const Topbar = () => {
         <TopbarLink style={{ marginRight: "0" }} onClick={handleLogout}>
           Logout
         </TopbarLink>
-        <Link to={`/profile/${userInfo.username}`}>
+        <Link to={`/profile/${user.username}`}>
           <ProfilePic
             src={
-              userInfo.profilePicture
-                ? PF + userInfo.profilePicture
+              user.profilePicture
+                ? PF + user.profilePicture
                 : PF + "persons/defaultavatar.png"
             }
           ></ProfilePic>

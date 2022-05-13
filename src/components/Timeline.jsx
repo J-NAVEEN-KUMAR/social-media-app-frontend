@@ -12,13 +12,13 @@ const TimelineContainer = styled.div`
 const Timeline = ({ username }) => {
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
-  const { userInfo } = user;
+  // const { userInfo } = user;
 
   useEffect(() => {
     const fetchPost = async () => {
       const res = username
         ? await axios.get("/posts/profile/" + username)
-        : await axios.get("/posts/timeline/" + userInfo._id);
+        : await axios.get("/posts/timeline/" + user._id);
       setPosts(
         res.data.sort((p1, p2) => {
           return new Date(p2.createdAt) - new Date(p1.createdAt);
@@ -26,11 +26,11 @@ const Timeline = ({ username }) => {
       );
     };
     fetchPost();
-  }, [username, userInfo._id]);
+  }, [username, user._id]);
 
   return (
     <TimelineContainer>
-      {(!username || username === userInfo.username) && <Share />}
+      {(!username || username === user.username) && <Share />}
 
       {posts.map((post) => (
         <Post key={post._id} post={post} />

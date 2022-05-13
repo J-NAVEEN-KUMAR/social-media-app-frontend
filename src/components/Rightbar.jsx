@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import { Add, Remove } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const RightbarContainer = styled.div`
   flex: 2.5;
@@ -85,16 +86,8 @@ const RightbarFollowButton = styled.button`
 
 const Rightbar = ({ user }) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  // console.log(user);
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useContext(AuthContext);
-  const { userInfo } = currentUser;
-  console.log("USERINFO", userInfo);
-  const [followed, setFollowed] = useState(
-    userInfo.following.includes(user?.id)
-  );
-  console.log(userInfo.following.includes(user?.id));
-  console.log("FOLLOWED ===>", followed);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -108,7 +101,6 @@ const Rightbar = ({ user }) => {
     };
     getFriends();
   }, [user]);
-  // console.log("useEffect", friends)
 
   //getting all the users
   useEffect(() => {
@@ -116,35 +108,12 @@ const Rightbar = ({ user }) => {
       try {
         const allUsers = await axios.get("users/all");
         setUsers(allUsers.data);
-        // console.log("USERS ===>", users);
       } catch (error) {
         console.log(error);
       }
     };
     getAllUsers();
   }, []);
-
-  const handleClick = async () => {
-    try {
-      // console.log("USER ===>", user._id);
-      // console.log("CURRENT_USER ===>", userInfo._id);
-      // console.log("Followed in ===>",followed)
-      if (followed) {
-        await axios.put("/users/" + user._id + "/unfollow", {
-          userId: userInfo._id,
-        });
-        dispatch({ type: "UNFOLLOW", payload: user._id });
-      } else {
-        await axios.put("/users/" + user._id + "/follow", {
-          userId: userInfo._id,
-        });
-        dispatch({ type: "FOLLOW", payload: user._id });
-      }
-      setFollowed(!followed);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const HomeRightbar = () => {
     return (
@@ -167,15 +136,41 @@ const Rightbar = ({ user }) => {
 
   const ProfileRightbar = () => {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+    const [followed, setFollowed] = useState(
+      currentUser.following.includes(user?._id)
+    );
+
+    const handleClick = async () => {
+      try {
+        if (followed) {
+          await axios.put("/users/" + user._id + "/unfollow", {
+            userId: currentUser._id,
+          });
+          setFollowed(!followed);
+          dispatch({ type: "UNFOLLOW", payload: user._id });
+          toast.info(`Unfollowed ${user.username}`);
+        } else {
+          await axios.put("/users/" + user._id + "/follow", {
+            userId: currentUser._id,
+          });
+          setFollowed(!followed);
+          dispatch({ type: "FOLLOW", payload: user._id });
+          toast.info(`Followed ${user.username}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return (
       <>
-        {user.username !== userInfo.username && (
+        {user.username !== currentUser.username && (
           <RightbarFollowButton onClick={handleClick}>
             {followed ? "Unfolow" : "Follow"}
             {followed ? <Remove /> : <Add />}
           </RightbarFollowButton>
         )}
-        <RightbarTitle>About You</RightbarTitle>
+        <RightbarTitle>About</RightbarTitle>
         <RightbarInfo>
           <RightbarInfoItem>
             <RightbarInfoKey>Lives in :</RightbarInfoKey>
@@ -204,7 +199,7 @@ const Rightbar = ({ user }) => {
             </RightbarInfoKeyValue>
           </RightbarInfoItem>
         </RightbarInfo>
-        <RightbarTitle>Your Friends</RightbarTitle>
+        <RightbarTitle>Friends</RightbarTitle>
         <RightbarFollowings>
           {friends.map((friend) => (
             <Link
