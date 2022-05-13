@@ -15,6 +15,6 @@ export const loginCall = async (userCredentials, dispatch) => {
   } catch (error) {
     dispatch({ type: "LOGIN_Failure", payload: error });
     if (error.response.status === 400) toast.error(error.response.data);
-    window.location.replace("/register");
+    // window.location.replace("/register");
   }
 };
