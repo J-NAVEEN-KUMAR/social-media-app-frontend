@@ -93,7 +93,9 @@ const Rightbar = ({ user }) => {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get("/users/friends/" + user?._id);
+        const friendList = await axios.get(
+          `${process.env.REACT_APP_API}/users/friends/` + user?._id
+        );
         setFriends(friendList.data);
       } catch (error) {
         console.log(error);
@@ -106,7 +108,9 @@ const Rightbar = ({ user }) => {
   useEffect(() => {
     const getAllUsers = async () => {
       try {
-        const allUsers = await axios.get("users/all");
+        const allUsers = await axios.get(
+          `${process.env.REACT_APP_API}/users/all`
+        );
         setUsers(allUsers.data);
       } catch (error) {
         console.log(error);
@@ -143,16 +147,22 @@ const Rightbar = ({ user }) => {
     const handleClick = async () => {
       try {
         if (followed) {
-          await axios.put("/users/" + user._id + "/unfollow", {
-            userId: currentUser._id,
-          });
+          await axios.put(
+            `${process.env.REACT_APP_API}/users/` + user._id + "/unfollow",
+            {
+              userId: currentUser._id,
+            }
+          );
           setFollowed(!followed);
           dispatch({ type: "UNFOLLOW", payload: user._id });
           toast.info(`Unfollowed ${user.username}`);
         } else {
-          await axios.put("/users/" + user._id + "/follow", {
-            userId: currentUser._id,
-          });
+          await axios.put(
+            `${process.env.REACT_APP_API}/users/` + user._id + "/follow",
+            {
+              userId: currentUser._id,
+            }
+          );
           setFollowed(!followed);
           dispatch({ type: "FOLLOW", payload: user._id });
           toast.info(`Followed ${user.username}`);

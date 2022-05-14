@@ -106,13 +106,10 @@ const Register = () => {
         password: password.current.value,
       };
       try {
-        await axios.post("auth/register", user);
-        toast.success(
-          "Registration successful ...! Please Login.",
-          {
-            icon: "🚀",
-          }
-        );
+        await axios.post(`${process.env.REACT_APP_API}/auth/register`, user);
+        toast.success("Registration successful ...! Please Login.", {
+          icon: "🚀",
+        });
         setLoading(false);
         history.push("/login");
         // console.log(history);

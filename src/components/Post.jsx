@@ -90,7 +90,9 @@ const Post = ({ post }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/users?userId=${post.userId}`
+      );
       setUser(res.data);
       // console.log(res.data);
     };
@@ -99,7 +101,9 @@ const Post = ({ post }) => {
 
   const handleLike = () => {
     try {
-      axios.put("/posts/" + post._id + "/likes", { userId: currentUser._id });
+      axios.put(`${process.env.REACT_APP_API}/posts/` + post._id + "/likes", {
+        userId: currentUser._id,
+      });
     } catch (error) {
       console.log(error);
     }

@@ -58,7 +58,9 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/users?username=${username}`
+      );
       // console.log("PROFILE==>",res.data);
       setUser(res.data);
     };

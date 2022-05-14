@@ -112,18 +112,18 @@ const Share = () => {
     };
     if (file) {
       const data = new FormData();
-      const fileName =  file.name;
+      const fileName = file.name;
       data.append("file", file);
       data.append("name", fileName);
       newPost.img = fileName;
       try {
-        axios.post("/upload", data);
+        axios.post(`${process.env.REACT_APP_API}/upload`, data);
       } catch (error) {
         console.log(error);
       }
     }
     try {
-      await axios.post("/posts", newPost);
+      await axios.post(`${process.env.REACT_APP_API}/posts`, newPost);
       window.location.reload();
       setLoading(false);
     } catch (error) {
@@ -184,7 +184,7 @@ const Share = () => {
             </ShareOption>
           </ShareOptions>
           <Button typeof="submit">
-            {loading ? <CircularProgress color="white" size="10px"/> : "Post"}
+            {loading ? <CircularProgress color="white" size="10px" /> : "Post"}
           </Button>
         </ShareBottom>
       </ShareWrapper>
